@@ -1,0 +1,18 @@
+service: umudik-apig-serverless
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-central-1
+  websocketsApiName: custom-websockets-api-name
+  websocketsApiRouteSelectionExpression: $request.body.action
+  websocketsDescription: Custom Serverless Websockets
+functions:
+  connection:
+    handler: handler.connection
+    events:
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
+      - websocket:
+          route: $default
