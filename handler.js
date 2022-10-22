@@ -1,6 +1,10 @@
 const TABLE_NAME = "ws_connection"
 const AWS = require('aws-sdk');
 require("dotenv").config()
+const apig = new AWS.ApiGatewayManagementApi({
+    endpoint:"https://92nkivbqo8.execute-api.eu-central-1.amazonaws.com/dev",
+    region: "eu-central-1"
+  });
 
 module.exports.connection = async (event, context) => {
     const dynamodb = new AWS.DynamoDB.DocumentClient({
@@ -8,19 +12,25 @@ module.exports.connection = async (event, context) => {
     });
     const connectionId = event.requestContext.connectionId
     const routeKey = event.requestContext.routeKey
-    const callbackUrlForAWS = "wss://92nkivbqo8.execute-api.eu-central-1.amazonaws.com/dev"
+
     if (routeKey === "$connect") {
         await dynamodb.put({
             TableName: TABLE_NAME,
             Item: {
                 connectionId,
                 ts: Date.now(),
-                ttl: parseInt((Date.now() / 1000) + 7200)
+                ttl: parseInt((Date.now() / 1000) + 3600)
             }
         }).promise();
+        await apig.postToConnection({
+            ConnectionId: connectionId,
+            Data: `Received`
+          }).promise();
+        return { statusCode: 200 , body: "Connected." };
     }
 
     if (routeKey === "$disconnect") {
+        console.log("disconnect");
         await dynamodb.delete({
             TableName: TABLE_NAME,
             Key: { connectionId }
@@ -28,20 +38,9 @@ module.exports.connection = async (event, context) => {
     }
 
     if (routeKey === "$default") {
-        const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
-            apiVersion: '2018-11-29',
-            endpoint: callbackUrlForAWS,
-        });
-
-        const res = await apigatewaymanagementapi.postToConnection({
-            ConnectionId: connectionId,
-            Data: JSON.stringify("hello"),
-        }.promise()
-        );
-        console.log(res);
-        return {
-            statusCode: 200,
-        }
+        console.log(JSON.stringify(event));
+        console.log("default");
     }
+
     return { statusCode: 200 };
 };
