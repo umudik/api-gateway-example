@@ -1,7 +1,7 @@
 {
-  "name": "serverless-websocket-example",
+  "name": "serverless-websocket",
   "version": "0.0.1",
-  "description": "WebSocket example using the Serverless Framework.",
+  "description": "Serverless Websocket Example",
   "devDependencies": {
     "@anttiviljami/serverless-stack-output": "^0.3.1",
     "http-server": "^0.12.3",
@@ -12,25 +12,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/neverendingqs/serverless-websocket-example.git"
-  },
   "keywords": [
+    "apigatesay",
     "serverless",
-    "serverless framework",
     "websocket"
   ],
-  "author": "neverendingqs",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/neverendingqs/serverless-websocket-example/issues"
-  },
-  "homepage": "https://github.com/neverendingqs/serverless-websocket-example#readme",
+  "author": "umudik",
+  "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.1238.0",
     "dotenv": "^16.0.3",
     "fookie": "^0.9.910",
+    "jsonwebtoken": "^8.5.1",
     "uuid": "^9.0.0",
     "ws": "^8.9.0"
   }

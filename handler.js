@@ -3,6 +3,7 @@ const TABLE_NAME = "ws_connection"
 const AWS = require('aws-sdk');
 const fookie = require("fookie")
 const init = fookie.init()
+
 module.exports.connection = async (event, context) => {
     await init
     const apig = new AWS.ApiGatewayManagementApi({
@@ -24,8 +25,6 @@ module.exports.connection = async (event, context) => {
                 ttl: parseInt((Date.now() / 1000) + 3600)
             }
         }).promise();
-
-        return { statusCode: 200, body: "Connected." };
     }
 
     if (routeKey === "$disconnect") {
@@ -51,20 +50,19 @@ module.exports.connection = async (event, context) => {
 module.exports.auth = async (event, context) => {
     await init
     const { headers, methodArn } = event;
-    console.log(JSON.stringify(event));
-    if (headers["token"] && headers["token"] == process.env.SYSTEM_TOKEN) {
-        return {
-            principalId: 'me',
-            policyDocument: {
-                Version: '2012-10-17',
-                Statement: [{
-                    Action: 'execute-api:Invoke',
-                    Effect: 'Allow',
-                    Resource: methodArn
-                }]
-            }
-        }
-    } else {
+    //VALIDATE TOKEN HERE
+    if (!headers["token"] || process.env.SYSTEM_TOKEN != headers["token"]) {
         throw new Error('Unauthorized');
+    }
+    return {
+        principalId: headers["token"],
+        policyDocument: {
+            Version: '2012-10-17',
+            Statement: [{
+                Action: 'execute-api:Invoke',
+                Effect: 'Allow',
+                Resource: methodArn
+            }]
+        }
     }
 };

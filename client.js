@@ -13,7 +13,7 @@ ws.on('open', function open() {
     model: "lifecycle",
     method: "read"
   }
-  ws.send(JSON.stringify(payload));
+
 });
 
 ws.on('message', function message(data) {

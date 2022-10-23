@@ -3,9 +3,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: eu-central-1
-  websocketsApiName: custom-websockets-api-name
   websocketsApiRouteSelectionExpression: $request.body.action
-  websocketsDescription: Custom Serverless Websockets
 functions:
   authorizer:
     handler: handler.auth
