@@ -7,11 +7,17 @@ provider:
   websocketsApiRouteSelectionExpression: $request.body.action
   websocketsDescription: Custom Serverless Websockets
 functions:
+  authorizer:
+    handler: handler.auth
   connection:
     handler: handler.connection
     events:
       - websocket:
           route: $connect
+          authorizer:
+            name: authorizer
+            identitySource:
+              - 'route.request.header.X-Forwarded-Proto'
       - websocket:
           route: $disconnect
       - websocket:

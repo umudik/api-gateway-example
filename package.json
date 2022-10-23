@@ -5,15 +5,11 @@
   "devDependencies": {
     "@anttiviljami/serverless-stack-output": "^0.3.1",
     "http-server": "^0.12.3",
-    "serverless": "^2.33.1",
     "serverless-plugin-common-excludes": "^3.0.1",
     "serverless-plugin-include-dependencies": "^4.1.0",
     "serverless-stack-output": "^0.2.3"
   },
   "scripts": {
-    "broadcast": "sls invoke --function broadcast --data '{ \"body\": \"Hello from server\" }'",
-    "sls": "sls",
-    "start": "http-server client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -32,7 +28,10 @@
   },
   "homepage": "https://github.com/neverendingqs/serverless-websocket-example#readme",
   "dependencies": {
+    "aws-sdk": "^2.1238.0",
     "dotenv": "^16.0.3",
-    "uuid": "^9.0.0"
+    "fookie": "^0.9.910",
+    "uuid": "^9.0.0",
+    "ws": "^8.9.0"
   }
 }
